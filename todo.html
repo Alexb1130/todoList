@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+    <title>todo list</title>
+    <style>
+        li {
+            position: relative;
+            list-style: none;
+        }
+        li::before {
+            content: 'import_export';
+            font-family: 'Material Icons';
+            display: inline-block;
+            font-size: 24px;
+            background-color: var(--teal);
+            color: #fff;
+        }
+        li::after {
+            content: 'create';
+            font-family: 'Material Icons';
+            position: absolute;
+            font-size: 24px;
+            top: 50%;
+            right: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        .btn-delete,
+        .btn-chenge {
+            background-color: #e2e3e5;
+            border: 0;
+        }
+        li input {
+            display: none;
+            border: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 0 10px;
+        }
+        li.editing input {
+            display: block;
+            background-color: var(--light);
+        }
+        li label {
+            margin-bottom: 0;
+        }
+        li.editing label {
+            display: none;
+        }
+        .my-checkbox {
+            display: inline-block;
+            position: relative;
+            width: auto;
+            height: auto;
+        }
+        .my-input-group-text {
+            border-radius: 0;
+        }
+        .completed {
+            opacity: 0.5;
+        }
+        .completed label {
+            text-decoration: line-through;
+        }
+        .completed .btn-chenge {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="jumbotron">
+                    <h1 class="display-4">Задачи</h1>
+                    <form class="form-row form">
+                        <input type="text" class="form-control task-edit" placeholder="Новая задача" aria-label="Поле для ввода новой задачи">
+                    </form>
+                </div>
+                <ul class="tasks-container" style="width: 100%; padding: 0;">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <template class="task-template">
+        <li class="input-group mt-3" draggable="true">
+            <div class="col align-items-center task-box p-2 alert-secondary task-content-box" style="padding: 0">
+                <input type="text" class="alert-secondary">
+                <label class="task-content"></label>
+            </div>
+            <button class="material-icons btn-chenge" type="button">
+                edit
+            </button>
+            <button class="material-icons btn-delete" type="button">
+                delete
+            </button>
+            <div class="input-group-text my-input-group-text">
+                <input type="checkbox" class="my-checkbox" aria-label="Checkbox for following text input">
+            </div>
+        </li>
+    </template>
+    <script src="./sort.js"></script>
+    <script src="./todo.js"></script>
+</body>
+
+</html>
