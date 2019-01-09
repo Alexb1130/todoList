@@ -79,33 +79,35 @@ function save() {
 }
 function load() {
     var data = JSON.parse(localStorage.getItem('list'));
-    for(var i = 0; i < data.addedTask.length; i++) {
-        var listItem = createTask().querySelector('li');
-        var label = listItem.querySelector('.task-content-box label');
-        label.textContent = data.addedTask[i];
-        var btnChenge = listItem.querySelector('.btn-chenge');
-        var btnDelete = listItem.querySelector('.btn-delete');
-        var checkbox = listItem.querySelector('.my-checkbox');
-        editingTask(btnChenge);
-        deleteTask(btnDelete);
-        completeTask(checkbox);
-        save();
-        container.appendChild(listItem);
-    }
-    for(var i = 0; i < data.completedTasks.length; i++) {
-        var listItemCompleted = createTask().querySelector('li');
-        listItemCompleted.classList.add('completed');
-        var labelCompleted = listItemCompleted.querySelector('.task-content-box label');
-        labelCompleted.textContent = data.completedTasks[i];
-        var btnChenge = listItemCompleted.querySelector('.btn-chenge');
-        var btnDelete = listItemCompleted.querySelector('.btn-delete');
-        var checkbox = listItemCompleted.querySelector('.my-checkbox');
-        checkbox.checked = true;
-        editingTask(btnChenge);
-        deleteTask(btnDelete);
-        completeTask(checkbox);
-        save();
-        container.appendChild(listItemCompleted);
+    if(data) {
+        for(var i = 0; i < data.addedTask.length; i++) {
+            var listItem = createTask().querySelector('li');
+            var label = listItem.querySelector('.task-content-box label');
+            label.textContent = data.addedTask[i];
+            var btnChenge = listItem.querySelector('.btn-chenge');
+            var btnDelete = listItem.querySelector('.btn-delete');
+            var checkbox = listItem.querySelector('.my-checkbox');
+            editingTask(btnChenge);
+            deleteTask(btnDelete);
+            completeTask(checkbox);
+            save();
+            container.appendChild(listItem);
+        }
+        for(var i = 0; i < data.completedTasks.length; i++) {
+            var listItemCompleted = createTask().querySelector('li');
+            listItemCompleted.classList.add('completed');
+            var labelCompleted = listItemCompleted.querySelector('.task-content-box label');
+            labelCompleted.textContent = data.completedTasks[i];
+            var btnChenge = listItemCompleted.querySelector('.btn-chenge');
+            var btnDelete = listItemCompleted.querySelector('.btn-delete');
+            var checkbox = listItemCompleted.querySelector('.my-checkbox');
+            checkbox.checked = true;
+            editingTask(btnChenge);
+            deleteTask(btnDelete);
+            completeTask(checkbox);
+            save();
+            container.appendChild(listItemCompleted);
+        }
     }
 }
 
