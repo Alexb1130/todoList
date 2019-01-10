@@ -12,31 +12,20 @@
 
     <title>todo list</title>
     <style>
-        li {
-            position: relative;
-            list-style: none;
-        }
         li::before {
             content: 'import_export';
             font-family: 'Material Icons';
-            display: inline-block;
-            font-size: 24px;
-            background-color: var(--teal);
-            color: #fff;
-        }
-        li::after {
-            content: 'create';
-            font-family: 'Material Icons';
             position: absolute;
+            top: 0;
+            left: -25px;
+            height: 100%;
+            line-height: 2.5;
             font-size: 24px;
-            top: 50%;
-            right: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
+            background-color: var(--gray);
+            color: #fff;
         }
         .btn-delete,
         .btn-chenge {
-            background-color: #e2e3e5;
             border: 0;
         }
         li input {
@@ -65,9 +54,6 @@
             width: auto;
             height: auto;
         }
-        .my-input-group-text {
-            border-radius: 0;
-        }
         .completed {
             opacity: 0.5;
         }
@@ -89,17 +75,16 @@
                     <h1 class="display-4">Задачи</h1>
                     <form class="form-row form">
                         <input type="text" class="form-control task-edit" placeholder="Новая задача" aria-label="Поле для ввода новой задачи">
+                        <button class="btn btn-success mt-3">Добавить</button>
                     </form>
                 </div>
-                <ul class="tasks-container" style="width: 100%; padding: 0;">
-
-                </ul>
+                <ul class="tasks-container list-group"></ul>
             </div>
         </div>
     </div>
     <template class="task-template">
-        <li class="input-group mt-3" draggable="true">
-            <div class="col align-items-center task-box p-2 alert-secondary task-content-box" style="padding: 0">
+        <li class="list-group-item d-flex" draggable="true">
+            <div class="col align-items-center task-box p-2 task-content-box">
                 <input type="text" class="alert-secondary">
                 <label class="task-content"></label>
             </div>

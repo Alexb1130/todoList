@@ -35,6 +35,7 @@ function editingTask(btn) {
     var item = btn.parentNode;
     var label = item.querySelector('label');
     var input = item.querySelector('input');
+    var checkbox = item.querySelector('.my-checkbox');
     btn.addEventListener('click', function() {
         var isEditing = item.classList.contains('editing');
         if(!isEditing) {
@@ -58,7 +59,7 @@ function completeTask(checkbox) {
     var parent = checkbox.parentNode.parentNode;
     checkbox.addEventListener('change', function() {
         checkbox.checked ? 
-        parent.classList.add('completed') :
+        parent.classList.add('completed') && parent.classList.remove('editing'):
         parent.classList.remove('completed')
         save();
     })
