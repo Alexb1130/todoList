@@ -70,7 +70,7 @@
         })
     }
 
-    function ononSave() {
+    function onSave() {
         var addedTasksArr = [];
         var completedTasksArr = [];
         for (var i = 0; i < container.children.length; i++) {
@@ -103,7 +103,7 @@
             }
             for (var i = 0; i < data.completedTasks.length; i++) {
                 var listItemCompleted = createTask().querySelector('li');
-                listItemCompleted.classList.add('completed');
+                listItemCompleted.classList.add('completed', 'list-group-item-success');
                 var labelCompleted = listItemCompleted.querySelector('.task-content-box label');
                 labelCompleted.textContent = data.completedTasks[i];
                 var btnChenge = listItemCompleted.querySelector('.btn-chenge');
