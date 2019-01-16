@@ -1,8 +1,11 @@
-(() => {
+(function() {
     var form = document.querySelector('.form');
     var container = document.querySelector('.tasks-container');
+    var containerCompleted = document.querySelector('.tasks-container-completed');
     var template = document.querySelector('.task-template').content;
     var taskEdit = document.querySelector('.task-edit');
+    var completedBtn = document.querySelector('.btn-filter-completed');
+    var inWorkBtn = document.querySelector('.btn-filter-in-work');
     var data = upLoad();
 
     function createTask() {
@@ -66,18 +69,37 @@
             checkbox.checked ?
                 parent.classList.add('completed', 'list-group-item-success') && parent.classList.remove('editing') :
                 parent.classList.remove('completed', 'list-group-item-success')
+            filteringTasks();
             onSave();
         })
     }
+    function filteringTasks() {
+        var completedTasks = document.querySelectorAll('.task');
+        for(var i = 0; i <= completedTasks.length; i++) {
+            var task = completedTasks[i];
+            if(task.classList.contains('completed')) {
+                containerCompleted.appendChild(task);
+            } else {
+                container.appendChild(task);
+            }
+            onSave();
+        }
+    }
+    // function runMainEvents() {
+    //     document.addEventListener('click', function(e) {
+    //         e.preventDefault();
+            
+    //     })
+    // }
 
     function onSave() {
         var addedTasksArr = [];
         var completedTasksArr = [];
+        for (var i = 0; i < containerCompleted.children.length; i++) {
+            completedTasksArr.push(containerCompleted.children[i].querySelector('.task-content').textContent)
+        }
         for (var i = 0; i < container.children.length; i++) {
-            var completed = container.children[i].classList.contains('completed');
-            completed ?
-                completedTasksArr.push(container.children[i].querySelector('.task-content').textContent) :
-                addedTasksArr.push(container.children[i].querySelector('.task-content').textContent);
+            addedTasksArr.push(container.children[i].querySelector('.task-content').textContent);
         }
         localStorage.setItem('list', JSON.stringify({
             addedTask: addedTasksArr,
@@ -114,7 +136,7 @@
                 onDeleteTask(btnDelete);
                 onCompleteTask(checkbox);
                 onSave();
-                container.appendChild(listItemCompleted);
+                containerCompleted.appendChild(listItemCompleted);
             }
         }
     }
@@ -126,5 +148,6 @@
     form.addEventListener('submit', onAddTask);
 
     sortable(container);
+    sortable(containerCompleted);
 
 })()
