@@ -4,8 +4,8 @@
     var containerCompleted = document.querySelector('.tasks-container-completed');
     var template = document.querySelector('.task-template').content;
     var taskEdit = document.querySelector('.task-edit');
-    var completedBtn = document.querySelector('.btn-filter-completed');
-    var inWorkBtn = document.querySelector('.btn-filter-in-work');
+    // var completedBtn = document.querySelector('.btn-filter-completed');
+    // var inWorkBtn = document.querySelector('.btn-filter-in-work');
     var data = upLoad();
 
     function createTask() {
@@ -65,10 +65,16 @@
 
     function onCompleteTask(checkbox) {
         var parent = checkbox.parentNode.parentNode;
+        var label = parent.querySelector('label');
+        var input = parent.querySelector('input');
         checkbox.addEventListener('change', function () {
-            checkbox.checked ?
-                parent.classList.add('completed', 'list-group-item-success') && parent.classList.remove('editing') :
+            if(checkbox.checked || checkbox.checked && parent.classList.contains('editing')) {
+                parent.classList.add('completed', 'list-group-item-success');
+                parent.classList.remove('editing');
+                label.textContent = input.value;
+            } else {
                 parent.classList.remove('completed', 'list-group-item-success')
+            };
             filteringTasks();
             onSave();
         })
@@ -85,12 +91,6 @@
             onSave();
         }
     }
-    // function runMainEvents() {
-    //     document.addEventListener('click', function(e) {
-    //         e.preventDefault();
-            
-    //     })
-    // }
 
     function onSave() {
         var addedTasksArr = [];
