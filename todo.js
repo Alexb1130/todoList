@@ -1,153 +1,103 @@
 (function() {
-    var form = document.querySelector('.form');
-    var container = document.querySelector('.tasks-container');
-    var containerCompleted = document.querySelector('.tasks-container-completed');
-    var template = document.querySelector('.task-template').content;
-    var taskEdit = document.querySelector('.task-edit');
-    // var completedBtn = document.querySelector('.btn-filter-completed');
-    // var inWorkBtn = document.querySelector('.btn-filter-in-work');
-    var data = upLoad();
 
-    function createTask() {
-        var taskItem = template.cloneNode(true);
-        return taskItem;
+    function save(data) {
+        var string = JSON.stringify(data);
+        localStorage.setItem('tasks', string);
     }
 
-    function onAddTask(e) {
-        e.preventDefault();
+    function load() {
+        var string = localStorage.getItem('tasks')
+        var data = JSON.parse(string);
 
-        if (taskEdit.value) {
-            var task = createTask();
-            var taskLabel = task.querySelector('.task-content-box label');
-            var btnChenge = task.querySelector('.btn-chenge');
-            var btnDelete = task.querySelector('.btn-delete');
-            var checkbox = task.querySelector('.my-checkbox');
-            container.appendChild(task);
-            taskLabel.textContent = taskEdit.value;
-            taskEdit.value = '';
-            editingTask(btnChenge);
-            onDeleteTask(btnDelete);
-            onCompleteTask(checkbox);
-            onSave();
-        } else if (data) {
-            upLoad();
-        } else {
-            return alert('Поле не должно быть пустым');
+        return data;
+    }
+
+    function Model(items) {
+        this.items = items;
+    }
+    Model.prototype.getItem = function(id) {
+        for(var i = 0; i <= this.items.length; i++) {
+            var item = this.items[i];
+            if(item.id == id) {
+                return item;
+            }
+            return -1;
         }
-        onSave();
+    }
+    Model.prototype.addItem = function(item) {
+        this.items.push(item);
+    }
+    Model.prototype.updateItem = function(id, data) {
+        var item = this.getItem(id);
+        for(var prop in data) {
+            item[prop] = data[prop];
+        }
+        return item;
+    }
+    Model.prototype.removeItem = function(id) {
+        var index = this.getItem(id);
+
+        if(index > -1) {
+            this.items.splice(index, 1);
+        }
     }
 
-    function editingTask(btn) {
-        var item = btn.parentNode;
-        var label = item.querySelector('label');
-        var input = item.querySelector('input');
-        var checkbox = item.querySelector('.my-checkbox');
-        btn.addEventListener('click', function () {
-            var isEditing = item.classList.contains('editing');
-            if (!isEditing) {
-                input.value = label.textContent;
+    function View() {
+        this.form = document.querySelector('.form');
+        this.input = document.querySelector('.task-edit');
+        this.list = document.querySelector('.tasks-container');
+        this.listCompleted = document.querySelector('.tasks-container-completed');
+        this.taskTemplate = document.querySelector('.task-template').content;
+    
+        this.form.addEventListener('submit', this.hendleAdd.bind(this));
+    }
+    View.prototype.createItem = function(task) {
+        var item = this.taskTemplate.cloneNode(true).querySelector('.task');
+        itemTitle = item.querySelector('.task-content').textContent = this.input.value;
+        item.setAttribute('data-id', task.id);
+        task.completed ? item.classList.add('completed') : item.classList.remove('completed');
+        return item;
+    }
+    View.prototype.addItem = function(task) {
+        var listItem = this.createItem(task);
+        this.list.appendChild(listItem);
+        this.input.value = '';
+    }
+    View.prototype.addEventClickHandler = function(e) {
+        document.addEventListener('click', this.hendleToggle.bind(this));
+    }
+    View.prototype.hendleToggle = function(e) {
+        var btnChange = e.target.classList.contains('btn-change');
+        var btnDelete = e.target.classList.contains('btn-delete');
+        var checkbox = e.target.classList.contains('my-checkbox');
+    }
+    View.prototype.hendleAdd = function(e) {
+        if(e) {
+            e.preventDefault();
+            if(this.input.value) {
+                var value = this.input.value;
+                this.addItem(value);
+                console.log(value);
             } else {
-                label.textContent = input.value;
+                alert('Поле должно быть заполненно');
             }
-            item.classList.toggle('editing');
-            input.focus();
-            onSave();
+        }
+    }
+
+    function Controller(model, view) {
+        this.model = model;
+        this.view = view;
+    }
+    Controller.prototype.addTask = function(title) {
+        var task = this.model.addItem({
+            id: Date.now(),
+            title: title,
+            completed: false
         })
+        this.view.form('submit', this.view.addItem(task));
     }
 
-    function onDeleteTask(btn) {
-        var item = btn.parentNode;
-        btn.addEventListener('click', function () {
-            item.remove();
-            onSave();
-        })
-    }
-
-    function onCompleteTask(checkbox) {
-        var parent = checkbox.parentNode.parentNode;
-        var label = parent.querySelector('label');
-        var input = parent.querySelector('input');
-        checkbox.addEventListener('change', function () {
-            if(checkbox.checked || checkbox.checked && parent.classList.contains('editing')) {
-                parent.classList.add('completed', 'list-group-item-success');
-                parent.classList.remove('editing');
-                label.textContent = input.value;
-            } else {
-                parent.classList.remove('completed', 'list-group-item-success')
-            };
-            filteringTasks();
-            onSave();
-        })
-    }
-    function filteringTasks() {
-        var completedTasks = document.querySelectorAll('.task');
-        for(var i = 0; i <= completedTasks.length; i++) {
-            var task = completedTasks[i];
-            if(task.classList.contains('completed')) {
-                containerCompleted.appendChild(task);
-            } else {
-                container.appendChild(task);
-            }
-            onSave();
-        }
-    }
-
-    function onSave() {
-        var addedTasksArr = [];
-        var completedTasksArr = [];
-        for (var i = 0; i < containerCompleted.children.length; i++) {
-            completedTasksArr.push(containerCompleted.children[i].querySelector('.task-content').textContent)
-        }
-        for (var i = 0; i < container.children.length; i++) {
-            addedTasksArr.push(container.children[i].querySelector('.task-content').textContent);
-        }
-        localStorage.setItem('list', JSON.stringify({
-            addedTask: addedTasksArr,
-            completedTasks: completedTasksArr
-        }));
-    }
-
-    function upLoad() {
-        var data = JSON.parse(localStorage.getItem('list'));
-        if (data) {
-            for (var i = 0; i < data.addedTask.length; i++) {
-                var listItem = createTask().querySelector('li');
-                var label = listItem.querySelector('.task-content-box label');
-                label.textContent = data.addedTask[i];
-                var btnChenge = listItem.querySelector('.btn-chenge');
-                var btnDelete = listItem.querySelector('.btn-delete');
-                var checkbox = listItem.querySelector('.my-checkbox');
-                editingTask(btnChenge);
-                onDeleteTask(btnDelete);
-                onCompleteTask(checkbox);
-                onSave();
-                container.appendChild(listItem);
-            }
-            for (var i = 0; i < data.completedTasks.length; i++) {
-                var listItemCompleted = createTask().querySelector('li');
-                listItemCompleted.classList.add('completed', 'list-group-item-success');
-                var labelCompleted = listItemCompleted.querySelector('.task-content-box label');
-                labelCompleted.textContent = data.completedTasks[i];
-                var btnChenge = listItemCompleted.querySelector('.btn-chenge');
-                var btnDelete = listItemCompleted.querySelector('.btn-delete');
-                var checkbox = listItemCompleted.querySelector('.my-checkbox');
-                checkbox.checked = true;
-                editingTask(btnChenge);
-                onDeleteTask(btnDelete);
-                onCompleteTask(checkbox);
-                onSave();
-                containerCompleted.appendChild(listItemCompleted);
-            }
-        }
-    }
-
-    onSave();
-
-    taskEdit.focus();
-
-    form.addEventListener('submit', onAddTask);
-
-    sortable(container);
-    sortable(containerCompleted);
-
+    var model = new Model([]);
+    var view = new View();
+    var controller = new Controller(model, view);
 })()
