@@ -24,8 +24,8 @@
             background-color: var(--gray);
             color: #fff;
         }
-        .btn-delete,
-        .btn-chenge {
+        .btn-remove,
+        .btn-edit {
             border: 0;
             background-color: transparent;
         }
@@ -61,7 +61,7 @@
         .completed label {
             text-decoration: line-through;
         }
-        .completed .btn-chenge {
+        .completed .btn-edit {
             display: none;
         }
     </style>
@@ -94,13 +94,13 @@
     <template class="task-template">
         <li class="list-group-item task d-flex" draggable="true">
             <div class="col align-items-center task-box p-2 task-content-box">
-                <input type="text" class="alert-secondary">
+                <input type="text" class="task-input">
                 <label class="task-content"></label>
             </div>
-            <button class="material-icons btn-chenge" type="button">
+            <button class="material-icons btn-edit" type="button">
                 edit
             </button>
-            <button class="material-icons btn-delete" type="button">
+            <button class="material-icons btn-remove" type="button">
                 delete
             </button>
             <div class="input-group-text my-input-group-text">
@@ -108,8 +108,12 @@
             </div>
         </li>
     </template>
-    <script src="./sort.js"></script>
-    <script src="./todo.js"></script>
+    <!-- <script src="./js/sort.js"></script> -->
+    <script src="./js/service.js"></script>
+    <script src="./js/model.js"></script>
+    <script src="./js/view.js"></script>
+    <script src="./js/controller.js"></script>
+    <script src="./js/index.js"></script>
 </body>
 
 </html>
