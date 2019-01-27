@@ -22,7 +22,9 @@ Controller.prototype.addItem = function(model, view) {
 }
 Controller.prototype.addEventListeners = function(model, view) {
     document.addEventListener('click', function(e) {
-        if(e.target.classList.contains('btn-remove')) {
+        var isRemove = e.target.classList.contains('btn-remove');
+        
+        if(isRemove) {
             var taskId = e.target.parentNode.getAttribute('data-id');
             view.hendleRemove(e);
             model.removeItem(taskId);
