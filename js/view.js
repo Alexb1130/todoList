@@ -4,11 +4,6 @@ function View() {
     this.list = document.querySelector('.tasks-container');
     this.listCompleted = document.querySelector('.tasks-container-completed');
     this.taskTemplate = document.querySelector('.task-template').content;
-
-}
-View.prototype.findItem = function(id) {
-    var listItem = document.querySelector(`[data-id=${id}]`);
-    return listItem;
 }
 View.prototype.createItem = function(task) {
     var item = this.taskTemplate.cloneNode(true).querySelector('.task');
