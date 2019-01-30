@@ -75,10 +75,6 @@
                 <div class="jumbotron">
                     <div class="tasks-header d-flex align-items-center justify-content-between">
                         <h1 class="display-4">Задачи</h1>
-                        <div class="statuses-filter">
-                            <!-- <button type="button" class="btn-filter-completed btn btn-outline-success">Завершено</button>
-                            <button type="button" class="btn-filter-in-work btn btn-outline-secondary">В работе</button> -->
-                        </div>
                     </div>
                     <form class="form-row form">
                         <input type="text" class="form-control task-edit" placeholder="Новая задача" aria-label="Поле для ввода новой задачи">
@@ -97,14 +93,14 @@
                 <input type="text" class="task-input">
                 <label class="task-content"></label>
             </div>
-            <button class="material-icons btn-edit" type="button">
+            <button class="material-icons btn-edit" data-command="edit" type="button">
                 edit
             </button>
-            <button class="material-icons btn-remove" type="button">
+            <button class="material-icons btn-remove" data-command="remove" type="button">
                 delete
             </button>
             <div class="input-group-text my-input-group-text">
-                <input type="checkbox" class="my-checkbox" aria-label="Checkbox for following text input">
+                <input type="checkbox" class="my-checkbox" data-command="completed">
             </div>
         </li>
     </template>

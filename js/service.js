@@ -12,6 +12,7 @@ Service.prototype.load = function() {
     return data;
 };
 Service.prototype.addItem = function(model, view) {
+    var that = this;
     view.form.addEventListener('submit', function(e) {
         e.preventDefault();
         if(view.input.value) {
@@ -21,6 +22,7 @@ Service.prototype.addItem = function(model, view) {
                 completed: false
             });
             view.addItem(task);
+            that.save(model);
         } else {
             alert('Поле должно быть заполненно');
         }
@@ -29,20 +31,20 @@ Service.prototype.addItem = function(model, view) {
 Service.prototype.addEventListeners = function(model, view) {
     document.addEventListener('click', function(e) {
 
-        var isRemove = e.target.classList.contains('btn-remove');
+        var isRemoved = e.target.classList.contains('btn-remove');
         var isCompleted = e.target.classList.contains('my-checkbox');
         var isEditing = e.target.classList.contains('btn-edit');
 
-        if(isRemove) {
+        if(isRemoved) {
             var taskId = e.target.parentNode.getAttribute('data-id');
-            view.hendleRemove(e);
+            view.handleRemove(e);
             model.removeItem(taskId);
             console.log(model);
 
         } else if(isCompleted) {
             var checkbox = e.target;
             var taskId = e.target.parentNode.parentNode.getAttribute('data-id');
-            view.hendleCompleted(e);
+            view.handleCompleted(e);
 
             if(checkbox.checked) {
                 model.updateItem(taskId, { completed: true });
@@ -53,7 +55,7 @@ Service.prototype.addEventListeners = function(model, view) {
             }
         } else if(isEditing) {
             var taskId = e.target.parentNode.getAttribute('data-id');
-            view.hendleEditing(e);
+            view.handleEditing(e);
             var value = e.target.parentNode.querySelector('.task-content').textContent;
             model.updateItem(taskId, { title: value });
             console.log(model, taskId);

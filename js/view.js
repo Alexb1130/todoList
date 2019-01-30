@@ -17,7 +17,7 @@ View.prototype.addItem = function(value) {
     this.input.value = '';
     this.list.appendChild(listItem);
 }
-View.prototype.hendleEditing = function(e) {
+View.prototype.handleEditing = function(e) {
     var btnEdit = e.target.classList.contains('btn-edit');
     var item = e.target.parentNode;
 
@@ -33,7 +33,7 @@ View.prototype.hendleEditing = function(e) {
         }
     }
 }
-View.prototype.hendleRemove = function(e) {
+View.prototype.handleRemove = function(e) {
     var btnRemove = e.target.classList.contains('btn-remove');
     var item = e.target.parentNode;
     if(btnRemove) {
@@ -41,7 +41,7 @@ View.prototype.hendleRemove = function(e) {
         item.remove();
     }
 }
-View.prototype.hendleCompleted = function(e) {
+View.prototype.handleCompleted = function(e) {
     var checkbox = e.target.classList.contains('my-checkbox');
     var item = e.target.parentNode.parentNode;
     if(checkbox) {
