@@ -8,7 +8,7 @@ Service.prototype.save = function(data) {
 Service.prototype.load = function() {
     var string = localStorage.getItem('tasks')
     var data = JSON.parse(string);
-
+    
     return data;
 };
 Service.prototype.addItem = function(model, view) {
@@ -29,36 +29,44 @@ Service.prototype.addItem = function(model, view) {
     });
 }
 Service.prototype.addEventListeners = function(model, view) {
+    var that = this;
     document.addEventListener('click', function(e) {
+        var command = e.target.getAttribute('data-command');
 
-        var isRemoved = e.target.classList.contains('btn-remove');
-        var isCompleted = e.target.classList.contains('my-checkbox');
-        var isEditing = e.target.classList.contains('btn-edit');
-
-        if(isRemoved) {
-            var taskId = e.target.parentNode.getAttribute('data-id');
-            view.handleRemove(e);
-            model.removeItem(taskId);
-            console.log(model);
-
-        } else if(isCompleted) {
-            var checkbox = e.target;
-            var taskId = e.target.parentNode.parentNode.getAttribute('data-id');
-            view.handleCompleted(e);
-
-            if(checkbox.checked) {
-                model.updateItem(taskId, { completed: true });
+        switch (command) {
+            case 'edit':
+                var taskId = e.target.parentNode.getAttribute('data-id');
+                view.handleEditing(e);
+                var value = e.target.parentNode.querySelector('.task-content').textContent;
+                model.updateItem(taskId, { title: value });
+                that.save(model);
                 console.log(model, taskId);
-            } else {
-                model.updateItem(taskId, { completed: false }); 
-                console.log(model, taskId);
-            }
-        } else if(isEditing) {
-            var taskId = e.target.parentNode.getAttribute('data-id');
-            view.handleEditing(e);
-            var value = e.target.parentNode.querySelector('.task-content').textContent;
-            model.updateItem(taskId, { title: value });
-            console.log(model, taskId);
+                break;
+
+            case 'remove':
+                var taskId = e.target.parentNode.getAttribute('data-id');
+                view.handleRemove(e);
+                model.removeItem(taskId);
+                that.save(model);
+                console.log(model);
+                break;
+                
+            case 'completed':
+                var checkbox = e.target;
+                var taskId = e.target.parentNode.parentNode.getAttribute('data-id');
+                view.handleCompleted(e);
+                if(checkbox.checked) {
+                    model.updateItem(taskId, { completed: true });
+                    that.save(model);
+                    console.log(model, taskId);
+                } else {
+                    model.updateItem(taskId, { completed: false }); 
+                    that.save(model);
+                    console.log(model, taskId);
+                }
+                break;
+            default:
+                break;
         }
     })
 }
