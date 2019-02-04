@@ -5,4 +5,5 @@ function Controller(model, view, service) {
 
     service.addItem(model, view);
     service.addEventListeners(model, view);
+    view.loadData(model.items);
 };

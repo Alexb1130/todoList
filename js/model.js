@@ -1,6 +1,6 @@
-function Item(item) {
-    this.item = item;
-}
+// function Item(item) {
+//     this.item = item;
+// };
 function Model(items) {
     this.items = items;
 };

@@ -7,9 +7,15 @@ function View() {
 }
 View.prototype.createItem = function(task) {
     var item = this.taskTemplate.cloneNode(true).querySelector('.task');
-    itemTitle = item.querySelector('.task-content').textContent = this.input.value;
+    var itemTitle = item.querySelector('.task-content').textContent = task.title;
+    var itemCheckbox = item.querySelector('.my-checkbox');
     item.setAttribute('data-id', task.id);
-    task.completed ? item.classList.add('completed') : item.classList.remove('completed');
+    if(task.completed) {
+        item.classList.add('completed', 'list-group-item-success')
+        itemCheckbox.checked = true;
+    } else {
+        item.classList.remove('completed', 'list-group-item-success')
+    }
     return item;
 }
 View.prototype.addItem = function(value) {
@@ -53,3 +59,11 @@ View.prototype.handleCompleted = function(e) {
         }
     }
 }
+View.prototype.loadData = function(data) {
+    if(data) {
+        for(var i = 0; i < data.length; i++) {
+            var item = this.createItem(data[i]);
+            this.list.appendChild(item);
+        }
+    }
+} 

@@ -8,8 +8,12 @@ Service.prototype.save = function(data) {
 Service.prototype.load = function() {
     var string = localStorage.getItem('tasks')
     var data = JSON.parse(string);
-    
-    return data;
+
+    if(data === null) {
+        return [];
+    } else {
+        return data;
+    }
 };
 Service.prototype.addItem = function(model, view) {
     var that = this;
