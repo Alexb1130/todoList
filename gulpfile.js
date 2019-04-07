@@ -12,7 +12,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const plumber = require('gulp-plumber');
 const groupMediaQueries = require('gulp-group-css-media-queries');
 const rename = require('gulp-rename');
-var ghPages = require('gulp-gh-pages');
+const ghPages = require('gulp-gh-pages');
 const browserSync = require('browser-sync').create();
 
 const paths = {
