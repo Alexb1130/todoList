@@ -15,11 +15,6 @@ const rename = require('gulp-rename');
 var ghPages = require('gulp-gh-pages');
 const browserSync = require('browser-sync').create();
 
-gulp.task('deploy', function () {
-    return gulp.src('./build/**/*')
-        .pipe(ghPages());
-});
-
 const paths = {
     root: './build',
 
@@ -40,6 +35,11 @@ const paths = {
         src: './src/**/*.js',
         build: './build/scripts'
     }
+}
+
+function deploy() {
+    return gulp.src('./build/**/*')
+        .pipe(ghPages());
 }
 
 function watch() {
@@ -98,6 +98,7 @@ exports.templates = templates;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.clean = clean;
+exports.deploy = deploy;
 
 gulp.task('default', gulp.series(
     clean,
